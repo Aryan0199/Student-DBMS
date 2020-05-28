@@ -3,7 +3,7 @@
 #include<string.h>
 #include<iostream>
 using namespace std;
-class student{
+class student{                       // 'student' is a class for which 'a' is an object.
 public:
     char first_name[10];
     char last_name[10];
@@ -11,8 +11,8 @@ public:
     char section[5];
 }a;
 int main() {
-    FILE *fp, *ft;
-    int choice;
+    FILE *fp, *ft;              // fp is a file pointer used to access file 'database.txt' 
+    int choice;                 // ft is file pointer used to access file 'temp.txt' ,which used for deleting a record of student.
     char another;
     char xlast_name[10];
     int x;
@@ -31,7 +31,7 @@ int main() {
         fflush(stdin);
         cin >> choice;
         switch (choice) {
-            case 1:
+            case 1:                                    //Adds record of a new student into databse.
                 another = 'y';
                 while (another == 'y') {
                     system("cls");
@@ -47,15 +47,15 @@ int main() {
                     cout << "Enter section: ";
                     fflush(stdin);
                     cin >> a.section;
-                    fp = fopen("database.txt", "a");
-                    fwrite(&a, sizeof(a), 1, fp);
+                    fp = fopen("database.txt", "a");           //After taking the details of a student, database.txt file is 
+                    fwrite(&a, sizeof(a), 1, fp);              // opened/created in 'append' mode to add the data to the file.
                     fclose(fp);
                     cout << "To add another record press y";
                     fflush(stdin);
                     another = getchar();
                 }
                 break;
-            case 2:
+            case 2:                                     //displays the record of all the students in the databse.
                 system("cls");
                 fp = fopen("database.txt", "r");
                 rewind(fp);
@@ -77,7 +77,7 @@ int main() {
                 system("pause");
                 fflush(stdin);
                 break;
-            case 3:
+            case 3:                            //Helps to modify record of a student, by accessing his record by his last name. 
                 system("cls");
                 another = 'y';
                 fp = fopen("database.txt", "r+");
@@ -112,7 +112,7 @@ int main() {
                 }
                 fclose(fp);
                 break;
-            case 4:
+            case 4:                              //Helps to delete record of student by accessing his record through last name.
                 system("cls");
                 another = 'y';
                 while (another == 'y') {
@@ -120,18 +120,19 @@ int main() {
                     ft = fopen("temp.txt", "w");
                     cout << "Enter last name: ";
                     cin >> xlast_name;
-                    rewind(fp);
-                    while (fread(&a, sizeof(a), 1, fp) == 1) {
+                    rewind(fp);                                        
+                    while (fread(&a, sizeof(a), 1, fp) == 1) {          //Copies all other records to a new file named as 'temp.txt'
                         if (strcmp(a.last_name, xlast_name) != 0) {
                             fwrite(&a, sizeof(a), 1, ft);
                         }
                     }
                     fclose(fp);
                     fclose(ft);
-                    remove("database.txt");
-                    rename("temp.txt", "database.txt");
-                    cout << "Succesfully deleted\n";
-                    cout << "To remove  another record press y";
+                    remove("database.txt");                           //'database.txt' have only record of that student whose
+                    rename("temp.txt", "database.txt");               // record is to be removed is finally deleted and the file
+                    cout << "Succesfully deleted\n";                  // containing record of other students is reamed to 
+                                                                      //original filename i.e 'databse.txt'.
+                    cout << "To remove  another record press y";      
                     fflush(stdin);
                     another = getchar();
                 }
